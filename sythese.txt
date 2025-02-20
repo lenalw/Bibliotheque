@@ -1,0 +1,77 @@
+Binome : Lena Lalaoui (21314813)
+         Rachel Ait Taleb (21320379)
+
+Exercice 03: 
+
+Q.3.1 – Comparaison des approches de recherche
+Recherche par numéro et par titre :
+
+Liste chaînée :
+La recherche se fait en parcourant l’ensemble des éléments, ce qui entraîne une complexité linéaire (O(n)).
+    
+Table de hachage :
+Pour la recherche par numéro ou par titre, même en utilisant une table de hachage, l’indexation n’est pas basée sur ces champs. Il est donc nécessaire de parcourir les éléments globalement, ce qui revient une recherche séquentielle et à une complexité en O(n).
+
+Recherche par auteur :
+Liste chaînée :
+La recherche par auteur se fait en parcourant la liste, donc en O(n).
+
+Table de hachage :
+Puisque la fonction de hachage est conçue sur la base de l'auteur, cette recherche bénéficie d’un accès direct (en moyenne O(1)), car l’index de l’auteur est calculé et seul la liste chainée correspondante à cet index est parcourue.
+
+
+Q.3.2 – Impact du choix de la taille de la table de hachage
+Taille trop petite :
+Une table de hachage insuffisamment dimensionnée génère un grand nombre de collisions. Cela ralentit les opérations (recherche, insertion, suppression) puisque plusieurs éléments se retrouvent dans le même bucket.
+
+Taille trop grande :
+Une table surdimensionnée entraîne un gaspillage de mémoire, car une grande partie de la table reste vide, ce qui n’améliore pas significativement les performances.
+
+Taille optimale :
+Dans la fonction charger_n_entreesH, la taille de la table est ajustée en fonction du nombre d’éléments à charger. (n/2 dans notre cas, ce choix est arbitraire. Ça permet d'éviter un minimum les collisions tout en gardant la taille de la table ...)
+Ce choix permet de minimiser les collisions et de maintenir une complexité optimale (en particulier pour la recherche par auteur), sans gaspillage excessif de mémoire.
+
+
+Q.3.3 – Implémentation, Mesures et Visualisation des Recherches
+Les résultats sont illustrés par les graphes du programme "graphe.py" affichées.
+
+Pour la recherche par auteur, la table de hachage offre un avantage significatif grâce à l’indexation directe par auteur, la recherche s'effectue en Teta(1) (inclu dans O(1))
+
+Pour la recherche par numéro et par titre, la fonction de hachage se base uniquement sur l'auteur, la recherche s'effectue donc séquentiellement (complexité O(n)) dans les deux structures.
+
+Démarche suivie :
+
+*Nous avons réalisé des tests pour les recherches par titre, par auteur, par numéro et pour la recherche d'exemplaire.
+*Les résultats de chaque test (temps et indicateurs) ont été enregistrés dans des fichiers CSV.
+*À partir de ces fichiers, nous avons tracé des graphes avec matplotlib.pyplot pour visualiser l’évolution des temps de recherche en fonction de la taille de la bibliothèque et comparer les complexités temporelles.
+
+Q.3.4 – Analyse des courbes de temps de recherche
+
+Liste chaînée :
+La recherche dans une liste chaînée nécessite de parcourir séquentiellement tous les éléments pour vérifier le critère de recherche. Ainsi, lorsque la taille de la bibliothèque augmente, le temps de recherche augmente de manière linéaire (O(n)), ce qui se traduit par une courbe de croissance linéaire.
+
+Table de hachage :
+Pour la recherche par auteur, l’indexage direct basé sur l’auteur permet de retrouver l’élément en temps quasi constant (O(1) en moyenne).
+
+Pour la recherche par numéro ou titre, la table de hachage ne bénéficie pas d’un accès direct puisque la clé de hachage est uniquement l’auteur. Il faut alors effectuer une recherche séquentielle, ce qui donne une complexité similaire à celle d’une liste chaînée (O(n)).
+       
+Ces différences se traduisent par des courbes distinctes qui illustrent l’avantage de la table de hachage pour la recherche par auteur, tandis que pour les recherches par numéro et titre, les performances restent comparables.
+
+pour recherche_exemplaires
+
+Liste chaînée :
+La recherche des exemplaires dans une liste chaînée nécessite une double boucle imbriquée, car chaque élément est comparé à tous les autres le suivant pour vérifier s’ils sont des exemplaires du même ouvrage. Cette approche entraîne une complexité quadratique O(n^2). Ainsi, lorsque la taille de la bibliothèque augmente, le temps d’exécution croît de manière exponentielle, comme le montre la courbe.
+
+Table de hachage :
+Contrairement à la liste chaînée, la table de hachage permet de limiter les comparaisons en ne parcourant que les éléments stockés au meme indice de la table, c'est-à-dire ceux ayant le même auteur. Comme les exemplaires d'un ouvrage ont forcément le même auteur, cette optimisation réduit considérablement le nombre de comparaisons nécessaires. La recherche s’effectue alors en parcourant uniquement les listes chaînées des cases où plusieurs éléments sont présents, ce qui aboutit à une complexité bien plus faible en moyenne. Le pire cas (O(n2)) n’est atteint que si tous les ouvrages ont le même auteur et se retrouvent au meme indice, ce qui est peu probable.
+
+
+// Approche spécifique pour la fonction recherche_exemplaires //
+
+Objectif :
+La fonction recherche_exemplaires a pour but de renvoyer les exemplaires disponibles d’un ouvrage donné, ayant un numéro différent.
+
+Détail de notre implémentation :
+Pour éviter d’ajouter plusieurs fois le même exemplaire ou de parcourir inutilement la structure une fois le résultat trouvé, un break est utilisé dans la boucle interne.
+Cela permet d’interrompre le parcours dès qu'un exemplaire est  identifié, garantissant ainsi que le résultat est renvoyé sans doublons et en minimisant les itérations superflues.
+
