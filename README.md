@@ -1,5 +1,4 @@
-# bibliotheque
-Gestion de bibliothèque
+# Gestion de bibliothèque
 Ce projet implémente une gestion de bibliothèque avec deux structures de données principales pour le stockage des ouvrages :
 
     Liste chaînée (fichiers avec le préfixe “LC”)
